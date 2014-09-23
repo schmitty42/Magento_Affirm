@@ -68,7 +68,7 @@ class Affirm_Affirm_Block_Payment_Form extends Mage_Payment_Block_Form
             $logoSrc = "https://cdn1.affirm.com/images/badges/affirm-logo_78x54.png";
             $html = "<img src=\"" . $logoSrc . "\" width=\"39\" height=\"27\" class=\"v-middle\" />&nbsp;";
             $html .= '<script type="text/javascript" src="' . $affirmJsUrl . '"></script>';
-            $html .= '<script type="text/javascript">'; //src="https://cdn1.affirm-stage.com/js/v2/affirm.js">';
+            $html .= '<script type="text/javascript">';
             $html .= 'function learnMore() {';
             $html .= 'affirm.setPublicApiKey("' . $publicApiKey . '");';
             $html .= "var modal = new affirm.ui.modal_widget(affirm.config.learn_more('SplitPay'));";
