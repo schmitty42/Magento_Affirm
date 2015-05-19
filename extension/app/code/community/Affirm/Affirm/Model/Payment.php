@@ -521,7 +521,7 @@ class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
 
     public function isAvailable($quote = null) {
         Mage::log("affirm_isAvailable -" .
-                  " quote: (" . $quote . ")" .
+                  " quote: (" . (bool)($quote!=null) . ")" .
                   " isActive: (" . (bool)(int)$this->getConfigData('active', $quote ? $quote->getStoreId() : null) . ")" .
                   " isApplicableToQuote: (" . (!$quote || $this->isApplicableToQuote($quote, 64)) . ")");
         return Mage_Payment_Model_Method_Abstract::isAvailable($quote);
