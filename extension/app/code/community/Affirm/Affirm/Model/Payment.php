@@ -4,7 +4,7 @@ require_once Mage::getBaseDir('lib').DS.'Affirm'.DS.'Affirm.php';
 
 class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
 {
-    // TODO(brian): extract this along with API client 
+    // TODO(brian): extract this along with API client
     const API_CHARGES_PATH = '/api/v2/charges/';
     const API_CHECKOUT_PATH = '/api/v2/checkout/';
 
@@ -121,7 +121,7 @@ class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
             $json = json_encode($data);
             $client->setRawData($json, 'application/json');
         }
-        
+
         $client->setAuth($this->getConfigData('api_key'), $this->getConfigData('secret_key'), Zend_Http_Client::AUTH_BASIC);
 
         $raw_result = $client->request($method)->getRawBody();
@@ -253,7 +253,7 @@ class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
 
         $amount_cents = Affirm_Util::formatCents($amount);
         $token = $payment->getAdditionalInformation(self::CHECKOUT_TOKEN);
-        $amount_to_authorize = $this->_get_checkout_total_from_token($token); 
+        $amount_to_authorize = $this->_get_checkout_total_from_token($token);
         $this->_validate_amount_result($amount_cents, $amount_to_authorize);
 
         $result = $this->_api_request(Varien_Http_Client::POST, "", array(
@@ -395,7 +395,7 @@ class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
             'shipping_type'=>$order->getShippingMethod(),
             'tax_amount'=>$this->formatCents($currency, $order->getTaxAmount()),
             "merchant" => array(
-                    "public_api_key"=>$this->getConfigData('api_key'), 
+                    "public_api_key"=>$this->getConfigData('api_key'),
                     "user_confirmation_url"=>Mage::getUrl('affirm/payment/confirm', array('_secure' => true)),
                     "user_cancel_url"=>Mage::helper('checkout/url')->getCheckoutUrl(),
                     "charge_declined_url"=>Mage::helper('checkout/url')->getCheckoutUrl()
@@ -517,5 +517,13 @@ class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
     public function redirectPreOrder()
     {
         return $this->getConfigData('pre_order');
+    }
+
+    public function isAvailable($quote = null) {
+        Mage::log("affirm_isAvailable -" .
+                  " quote: (" . $quote . ")" .
+                  " isActive: (" . (bool)(int)$this->getConfigData('active', $quote ? $quote->getStoreId() : null) . ")" .
+                  " isApplicableToQuote: (" . (!$quote || $this->isApplicableToQuote($quote, 64)) . ")");
+        return Mage_Payment_Model_Method_Abstract::isAvailable($quote);
     }
 }

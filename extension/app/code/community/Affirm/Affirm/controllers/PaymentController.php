@@ -110,6 +110,8 @@ class Affirm_Affirm_PaymentController extends Mage_Checkout_OnepageController
             Mage::register("affirm_token_code", $checkout_token);
             $this->_forward($proxy_request["action"], $proxy_request["controller"], $proxy_request["module"], $proxy_request["params"]);
 
+            Mage::log("affirm_confirm- token: " . $checkout_token);
+
             if ($this->isXhrRequest($proxy_request))
             {
                 #need to actually execute the forward!
