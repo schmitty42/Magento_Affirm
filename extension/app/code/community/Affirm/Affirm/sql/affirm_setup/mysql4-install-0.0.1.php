@@ -19,9 +19,11 @@
 /** @var Mage_Core_Model_Resource_Setup $this */
 $installer = $this;
 $installer->startSetup();
-
-$adminSession = Mage::getSingleton('admin/session');
-$adminSession->unsetAll();
-$adminSession->getCookie()->delete($adminSession->getSessionName());
+if(isset($_SERVER['REQUEST_URI'])) {
+    // if migrations are run from a shell script this will fail
+    $adminSession = Mage::getSingleton('admin/session');
+    $adminSession->unsetAll();
+    $adminSession->getCookie()->delete($adminSession->getSessionName());
+}
 
 $installer->endSetup();
