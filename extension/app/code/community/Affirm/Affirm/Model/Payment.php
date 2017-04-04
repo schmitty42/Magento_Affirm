@@ -495,6 +495,8 @@ class Affirm_Affirm_Model_Payment extends Mage_Payment_Model_Method_Abstract
                 'zipcode' => $billingAddress->getPostcode(),
             ));
 
+        if(!$shipping) $shipping = $billing;
+
         $items = array();
         $productIds = array();
         $productItemsMFP = array();
